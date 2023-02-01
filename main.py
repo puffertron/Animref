@@ -19,6 +19,7 @@ root.title('AnimRef')
 
 # root.geometry(f"{window_w}x{window_h}+{center_x}+{center_y}")
 
+max_height = 400
 
 def stream(frames, target, fps, loop=True):
     duration = float(1/fps)
@@ -27,6 +28,8 @@ def stream(frames, target, fps, loop=True):
         before = perf_counter()
         for frame in frames:   
             frame_image = Image.fromarray(frame)
+            aspect = frame_image.width / frame_image.height
+            frame_image = frame_image.resize((int(max_height*aspect), max_height))
             frame_image=ImageTk.PhotoImage(frame_image)
             l1.config(image=frame_image)
             l1.image = frame_image
@@ -46,7 +49,7 @@ def stream(frames, target, fps, loop=True):
         print(e)
         return   
 
-rawurl = "https://twitter.com/IIuvatar_/status/1620554094300520448"
+rawurl = "https://twitter.com/EffectsSakuga/status/1613000115265978368"
 id = rawurl.split('/')[-1]
 
 ##get the video
