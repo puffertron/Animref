@@ -5,9 +5,9 @@ from PIL import Image, ImageTk
 import youtube_dl
 from time import perf_counter, sleep
 from threading import Thread
+from tkinterdnd2 import DND_TEXT, TkinterDnD
 
-
-root = tk.Tk()
+root = TkinterDnD.Tk()
 
 root.title('AnimRef')
 
@@ -52,13 +52,13 @@ def stream(frames, target, fps, loop=True):
 rawurl = "https://twitter.com/EffectsSakuga/status/1613000115265978368"
 id = rawurl.split('/')[-1]
 
-##get the video
-ydl_opts = {
-    #'forceurl': 'true'
-    'outtmpl': '%(id)s.%(ext)s'
-}
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download([rawurl])
+# ##get the video
+# ydl_opts = {
+#     #'forceurl': 'true'
+#     'outtmpl': '%(id)s.%(ext)s'
+# }
+# with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+#     ydl.download([rawurl])
 
 ##setup ui
 f1=ttk.Frame()
@@ -67,6 +67,9 @@ l1.pack()
 f1.pack()
 
 textbox = ttk.Entry()
+textbox.drop_target_register(DND_TEXT)
+textbox.dnd_bind('<<Drop>>', lambda e: textbox.insert(tk.END, e.data))
+textbox.pack()
 
 video_name = f"{id}.mp4"
 print("loading vid")
