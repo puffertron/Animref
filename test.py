@@ -1,45 +1,26 @@
-from tkinter import *
-import imageio.v3 as imageio
-from PIL import Image, ImageTk
-from time import perf_counter, sleep
-import youtube_dl
-
-def stream(index):
-    try:
-        before = perf_counter()
-        image = video[0]
-        frame_image = Image.fromarray(image)
-        frame_image=ImageTk.PhotoImage(frame_image)
-        l1.config(image=frame_image)
-        l1.image = frame_image
-        after = perf_counter()
-        delta = int((after - before)*1000)   #rough!!
-        print(delta)
-        l1.after(delay-delta, lambda: stream())
-    except Exception as e:
-        print(e)
-        video.close()
-        return   
-########### Main Program ############
-root = Tk()
-root.title('Video in a Frame')
-f1=Frame()
-l1 = Label(f1)
-l1.pack()
-f1.pack()
-#get url
-tweeturl = "https://twitter.com/IIuvatar_/status/1620554094300520448"
-vidurl = ""
-ydl_opts = {
-    #'forceurl': 'true'
-}
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download([tweeturl])
+from ttkwidgets import TickScale
+import tkinter as tk
+from tkinter import ttk
 
 
-video_name = "R:\Art\Animation Sketches\supercube10000-0239.mp4"   #Image-path
-video = imageio.imread(video_name, plugin="pyav")
-delay = int(33)
-print (delay)
-stream()
+root = tk.Tk()
+style = ttk.Style(root)
+style.theme_use('clam')
+style.configure('my.Vertical.TScale', sliderlength=50, background='white',
+                foreground='red')
+style.configure('my.Horizontal.TScale', sliderlength=10,
+                font='TkDefaultFont 20 italic')
+s1 = TickScale(root, orient='vertical', style='my.Vertical.TScale',
+               tickinterval=0.2, from_=-1, to=1, showvalue=True, digits=2,
+               length=400, labelpos='e')
+s2 = TickScale(root, orient='horizontal', style='my.Horizontal.TScale',
+               from_=0, to=10, tickinterval=2, resolution=1,
+               showvalue=True, length=400)
+s3 = TickScale(root, orient='horizontal', from_=0.25, to=1, tickinterval=0.1,
+               resolution=0.1)
+
+s1.pack(fill='y')
+s2.pack(fill='x')
+s3.pack(fill='x')
+
 root.mainloop()
